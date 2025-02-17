@@ -1,50 +1,40 @@
-# React + TypeScript + Vite
+# Real-time Customer Support Chat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A real-time chat application built with React, TypeScript, and Socket.IO, featuring both customer widget and agent dashboard interfaces. This project enables seamless communication between customers and support agents in real-time.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Customer Widget
+- Real-time messaging with support agents
+- Automatic user registration
+- Message history preservation
+- Responsive design for all devices
+- Persian language support with RTL layout
+- Timestamp display in Persian format
+- Clean and modern UI
 
-## Expanding the ESLint configuration
+### Agent Dashboard
+- View and manage multiple customer conversations
+- Real-time message updates
+- Unread message indicators
+- User status monitoring
+- Conversation history for each customer
+- Easy navigation between customer chats
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tech Stack
 
-- Configure the top-level `parserOptions` property like this:
+- **Frontend Framework**: React + Vite
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Real-time Communication**: Socket.IO
+- **Build Tool**: Vite
+- **Package Manager**: npm
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+The application will be available at:
+- Customer Widget: `http://localhost:5173/client`
+- Agent Dashboard: `http://localhost:5173/webapp`
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Acknowledgments
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Socket.IO server template provided by Raychat
+- Design inspiration from Raychat's UI/UX team
