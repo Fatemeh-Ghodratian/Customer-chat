@@ -10,11 +10,12 @@ const AgentAvatar = ({ name }: { name: string }) => {
     .toUpperCase();
 
   return (
-    <div className="w-[36px] h-[36px] rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600">
+    <div className="w-[36px] h-[36px] border border-white rounded-full bg-[#C8B6FA] flex items-center justify-center text-sm font-medium text-[#2F1673]">
       {initials}
     </div>
   );
 };
+
 const toPersianDigits = (num: string) => {
   const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   return num.replace(/[0-9]/g, (d) => persianDigits[parseInt(d)]);
@@ -38,6 +39,7 @@ const ClientWidget: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [agentName, setAgentName] = useState<string>("Online Agent");
 
   useEffect(() => {
     const newSocket = io("http://localhost:2000");
@@ -118,8 +120,8 @@ const ClientWidget: React.FC = () => {
           setIsOpen(!isOpen);
           if (!isOpen) handleRegister();
         }}
-        style={{ padding: 0, border: "none" }}
-        className="p-0 bg-transparent border-none hover:opacity-90 transition-all flex items-center justify-center"
+        style={{ padding: 0, border: "none", outline: "none" }}
+        className="p-0 bg-transparent border-none focus:outline-none focus:border-none hover:opacity-90 transition-all flex items-center justify-center"
       >
         <img
           src="/images/raychat-logo.png"
@@ -134,7 +136,7 @@ const ClientWidget: React.FC = () => {
           {/* Chat Header */}
           <div className="bg-[#5B4DFF] text-white p-4 rounded-t-[12px] border border-white">
             <div className="flex items-center gap-3">
-              <AgentAvatar name="پشتیبان سایت" />
+              <AgentAvatar name={agentName} />
               <div>
                 <h2 className="text-lg font-bold">پشتیبانی آنلاین</h2>
                 <p className="text-sm opacity-90">پاسخگوی سوالات شما هستیم</p>
@@ -150,23 +152,28 @@ const ClientWidget: React.FC = () => {
                     msg.isFromAgent ? "justify-start" : "justify-end"
                   } items-start gap-2`}
                 >
-                  {msg.isFromAgent && <AgentAvatar name="پشتیبان سایت" />}
-                  <div
-                    className={`p-3 rounded-lg max-w-[80%] break-words whitespace-pre-wrap ${
-                      msg.isFromAgent
-                        ? "bg-gray-100 text-gray-800"
-                        : "bg-purple-600 text-white"
-                    }`}
-                  >
-                    {msg.text}
+                  <div className="flex items-center gap-[8px]">
+                    {msg.isFromAgent && <AgentAvatar name={agentName} />}
+                    <div
+                      className={`p-3 inset-shadow-sm rounded-lg max-w-[80%] break-words whitespace-pre-wrap ${
+                        msg.isFromAgent
+                          ? "bg-white border border-[#E0E0E0] text-gray-800 rounded-br-none order-1"
+                          : "bg-[#5B4DFF] text-white rounded-bl-none order-2"
+                      }`}
+                    >
+                      {msg.text}
+                    </div>
+
+                    <div
+                      className={`text-xs text-gray-500 ${
+                        msg.isFromAgent
+                          ? "text-right order-2"
+                          : " text-left order-1"
+                      }`}
+                    >
+                      {formatPersianTime(new Date(msg.timestamp).getTime())}
+                    </div>
                   </div>
-                </div>
-                <div
-                  className={`text-xs text-gray-500 ${
-                    msg.isFromAgent ? "mr-12 text-right" : "ml-2 text-left"
-                  }`}
-                >
-                  {formatPersianTime(new Date(msg.timestamp).getTime())}
                 </div>
               </div>
             ))}
@@ -175,22 +182,27 @@ const ClientWidget: React.FC = () => {
           </div>
 
           {/* Chat Input */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4">
             <div className="flex gap-2">
               <input
                 type="text"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="پیام خود را بنویسید..."
-                className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="اینجا بنویسید..."
+                className="flex-1 p-2 border border-[#E0E0E0] rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
               <button
                 onClick={handleSendMessage}
                 disabled={!inputText.trim()}
-                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ padding: 0, background: "#C2C2C2", borderRadius:'50%' }}
+                className=" size-[42px] rounded-full transition-all flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                ارسال
+                <img
+                  src="/images/send-icon.png"
+                  alt="sent button"
+                  className="size-[24px] object-contain"
+                />
               </button>
             </div>
           </div>
