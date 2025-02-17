@@ -14,10 +14,12 @@ const AgentDashboard: React.FC = () => {
     {}
   );
 
+  // Effect to initialize socket connection and handle events
   useEffect(() => {
     const newSocket = io("http://localhost:2000");
     setSocket(newSocket);
 
+    // Handle user connection event
     newSocket.on("user-connected", (user: Client) => {
       setUsers((prev) => {
         if (!prev.find((u) => u.clientId === user.clientId)) {
@@ -27,6 +29,7 @@ const AgentDashboard: React.FC = () => {
       });
     });
 
+    // Handle new user message event
     newSocket.on("new-user-message", ({ message }: { message: Message }) => {
       setMessagesByUser((prev) => ({
         ...prev,
@@ -41,6 +44,7 @@ const AgentDashboard: React.FC = () => {
       }
     });
 
+    // Handle message event
     newSocket.on("message", (message: Message) => {
       setMessagesByUser((prev) => ({
         ...prev,
@@ -48,6 +52,7 @@ const AgentDashboard: React.FC = () => {
       }));
     });
 
+    // Register agent
     newSocket.emit("register-agent");
 
     return () => {
@@ -55,6 +60,7 @@ const AgentDashboard: React.FC = () => {
     };
   }, [selectedUser]);
 
+  // Function to handle sending a message
   const handleSendMessage = () => {
     if (socket && selectedUser && inputText.trim()) {
       const newMessage = {
@@ -79,6 +85,7 @@ const AgentDashboard: React.FC = () => {
     }
   };
 
+  // Function to handle key press event for sending message
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -86,6 +93,7 @@ const AgentDashboard: React.FC = () => {
     }
   };
 
+  // Function to receive messages for a selected user
   const receiveMessages = (clientId: string) => {
     if (socket) {
       setSelectedUser(clientId);
@@ -164,6 +172,7 @@ const AgentDashboard: React.FC = () => {
                 </div>
               ))}
             </div>
+            {/* Chat input */}
             <div className="justify-self-center px-6 py-2 m-2 bg-white rounded-[12px] border border-[#BBBBBB]">
               <div className="flex gap-2">
                 <input

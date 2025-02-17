@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import { Message } from "../types/types";
 
+// Agent avatar component
 const AgentAvatar = ({ name }: { name: string }) => {
   const initials = name
     .split(" ")
@@ -16,11 +17,13 @@ const AgentAvatar = ({ name }: { name: string }) => {
   );
 };
 
+// Function to convert digits to Persian
 const toPersianDigits = (num: string) => {
   const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   return num.replace(/[0-9]/g, (d) => persianDigits[parseInt(d)]);
 };
 
+// Function to format timestamp in Persian
 const formatPersianTime = (timestamp: number) => {
   const date = new Date(timestamp);
   const hours = date.getHours();
@@ -33,6 +36,7 @@ const formatPersianTime = (timestamp: number) => {
   )} ${ampm}`;
 };
 
+// Main component for the client widget
 const ClientWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -41,6 +45,7 @@ const ClientWidget: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [agentName, setAgentName] = useState<string>("Online Agent");
 
+  // Effect to initialize socket connection and handle messages
   useEffect(() => {
     const newSocket = io("http://localhost:2000");
     setSocket(newSocket);
@@ -69,10 +74,12 @@ const ClientWidget: React.FC = () => {
     };
   }, []);
 
+  // Effect to scroll to the latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Function to handle user registration
   const handleRegister = () => {
     if (socket) {
       socket.emit("register-user", {
@@ -82,6 +89,7 @@ const ClientWidget: React.FC = () => {
     }
   };
 
+  // Function to handle sending a message
   const handleSendMessage = () => {
     if (socket && localStorage.getItem("clientId") && inputText.trim()) {
       socket.emit("user-message", {
@@ -92,6 +100,7 @@ const ClientWidget: React.FC = () => {
     }
   };
 
+  // Function to generate a random ID for users
   const makeId = (length: number) => {
     let result = "";
     const characters =
@@ -105,6 +114,7 @@ const ClientWidget: React.FC = () => {
     return result;
   };
 
+  // Function to handle key press event for sending message
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -195,7 +205,11 @@ const ClientWidget: React.FC = () => {
               <button
                 onClick={handleSendMessage}
                 disabled={!inputText.trim()}
-                style={{ padding: 0, background: "#C2C2C2", borderRadius:'50%' }}
+                style={{
+                  padding: 0,
+                  background: "#C2C2C2",
+                  borderRadius: "50%",
+                }}
                 className=" size-[42px] rounded-full transition-all flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <img
