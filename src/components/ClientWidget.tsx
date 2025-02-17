@@ -155,7 +155,7 @@ const ClientWidget: React.FC = () => {
                   <div className="flex items-center gap-[8px]">
                     {msg.isFromAgent && <AgentAvatar name={agentName} />}
                     <div
-                      className={`p-3 inset-shadow-sm rounded-lg max-w-[80%] break-words whitespace-pre-wrap ${
+                      className={`p-3 inset-shadow-sm rounded-lg max-w-[70%] break-words whitespace-pre-wrap ${
                         msg.isFromAgent
                           ? "bg-white border border-[#E0E0E0] text-gray-800 rounded-br-none order-1"
                           : "bg-[#5B4DFF] text-white rounded-bl-none order-2"
